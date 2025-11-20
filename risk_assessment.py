@@ -82,12 +82,9 @@ def run_simulation(num_runners=5, num_warehouses=4, attempts_per_runner=10):
         warehouses.append(w)
 
     bars = []
-    if TQDM_AVAILABLE:
-        for r in range(num_runners):
-            p = tqdm(total=attempts_per_runner, desc=f"Runner-{r+1}", position=r, leave=True)
-            bars.append(p)
-    else:
-        bars = [None] * num_runners
+    for r in range(num_runners):
+        p = tqdm(total=attempts_per_runner, desc=f"Runner-{r+1}", position=r, leave=True)
+        bars.append(p)
 
     runners = []
     for i in range(num_runners):
@@ -99,9 +96,8 @@ def run_simulation(num_runners=5, num_warehouses=4, attempts_per_runner=10):
     for r in runners:
         r.join()
 
-    if TQDM_AVAILABLE:
-        for b in bars:
-            b.close()
+    for b in bars:
+        b.close()
 
     total_profit = sum(r.profit for r in runners)
     summary = {
